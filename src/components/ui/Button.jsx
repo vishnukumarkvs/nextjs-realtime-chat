@@ -29,11 +29,13 @@ export default function Button({
   size,
   isLoading,
   children,
+  ...props
 }) {
   return (
     <button
       className={cn(ButtonVariants({ variant, size, className }))}
       disabled={isLoading}
+      {...props}
     >
       {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
       {children}
