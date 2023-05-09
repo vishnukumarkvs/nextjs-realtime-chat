@@ -14,7 +14,14 @@ const Login = () => {
   async function login(provider) {
     setIsLoading(true);
     try {
-      await signIn(provider, { email, password });
+      if (provider === "email") {
+        await signIn(provider, {
+          email,
+          callbackUrl: `${window.location.origin}/dashboard`,
+        });
+      } else {
+        await signIn(provider, { email, password });
+      }
     } catch (error) {
       toast.error("Something went wrong with your login.");
     } finally {
@@ -102,6 +109,23 @@ const Login = () => {
                 value="Sign in with Google"
                 onClick={() => login("google")}
                 class="mt-10 px-4 py-2 rounded-full bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+              />
+
+              <p class="mt-4 block text-sm text-center font-medium border-rose-600 border-b border-1"></p>
+
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
+                className="mt-10 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
+              />
+
+              <input
+                type="submit"
+                value="Sign in with Email"
+                onClick={() => login("email")}
+                className="mt-10 px-4 py-2 rounded bg-rose-500 hover:bg-rose-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-rose-500 focus:ring-opacity-80 cursor-pointer"
               />
             </div>
           </div>
