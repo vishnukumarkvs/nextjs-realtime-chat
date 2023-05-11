@@ -2,9 +2,10 @@ import bcrypt from "bcrypt";
 import { redis } from "@/lib/redis";
 import { checkUserExists } from "@/lib/utils";
 import { nanoid } from "nanoid";
+import { signIn } from "next-auth/react";
 
 export async function POST(req) {
-  const { name, email, password } = await req.json();
+  const { email, password } = await req.json();
 
   try {
     // Check if user already exists in Redis
@@ -21,7 +22,6 @@ export async function POST(req) {
 
     const user = {
       id,
-      name,
       email,
       password: hash,
       salt,
@@ -31,6 +31,12 @@ export async function POST(req) {
     if (result !== "OK") {
       throw new Error("Failed to create user");
     }
+
+    signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/dashbaord",
+    });
 
     return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {
