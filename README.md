@@ -37,3 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - In React, routing happens on clientside. Nextjs, it happens on serverside
 - Google auth: https://www.youtube.com/watch?v=sW6qi7o60mo
+
+react forms
+npm i @tailwindcss/forms - add this plugin in tailwindconfigjs
+npm i react-hook-form @hookform/resolvers axios
+https://react-hook-form.com/api/useform/#resolver
