@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { redis } from "@/lib/redis";
-import { checkUserExists } from "@/lib/utils";
 import { nanoid } from "nanoid";
 import { signIn } from "next-auth/react";
 
@@ -9,10 +8,6 @@ export async function POST(req) {
 
   try {
     // Check if user already exists in Redis
-    const userExists = await checkUserExists(email);
-    if (userExists) {
-      return new Response("User already exists", { status: 409 });
-    }
 
     // Generate a salt and hash the password using bcrypt
     const saltRounds = 10;

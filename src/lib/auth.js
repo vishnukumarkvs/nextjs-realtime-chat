@@ -127,9 +127,9 @@ const jwtCallback = async ({ token, user }) => {
 const sessionCallback = ({ session, token }) => {
   if (token) {
     session.user.id = token.id;
-    session.user.name = token.name;
+    session.user.name = token?.name;
     session.user.email = token.email;
-    session.user.image = token.image;
+    session.user.image = token?.image;
   }
 
   return session;

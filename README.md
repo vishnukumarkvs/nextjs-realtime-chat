@@ -42,3 +42,42 @@ react forms
 npm i @tailwindcss/forms - add this plugin in tailwindconfigjs
 npm i react-hook-form @hookform/resolvers axios
 https://react-hook-form.com/api/useform/#resolver
+
+color schemes
+Certainly! Here are some modern color schemes that you can consider for your job portal website:
+
+1. Bold and Vibrant:
+
+   - Primary Color: #FF4C4C (Coral Red)
+   - Secondary Color: #FFB84C (Saffron)
+   - Accent Color: #4CDBFF (Electric Blue)
+   - Neutral Color: #F2F2F2 (Light Gray)
+
+2. Fresh and Clean:
+
+   - Primary Color: #62D2A2 (Mint Green)
+   - Secondary Color: #FFC947 (Sunshine Yellow)
+   - Accent Color: #3F74C1 (Sky Blue)
+   - Neutral Color: #FFFFFF (White)
+
+3. Sophisticated and Elegant:
+
+   - Primary Color: #3D3D3D (Charcoal Gray)
+   - Secondary Color: #A378FF (Lilac Purple)
+   - Accent Color: #FF5F5F (Crimson)
+   - Neutral Color: #EFEFEF (Light Gray)
+
+4. Playful and Energetic:
+
+   - Primary Color: #FF824C (Tangerine Orange)
+   - Secondary Color: #FFCE4C (Golden Yellow)
+   - Accent Color: #4C4CFF (Royal Blue)
+   - Neutral Color: #E5E5E5 (Pale Gray)
+
+5. Sleek and Minimalistic:
+   - Primary Color: #333333 (Black)
+   - Secondary Color: #FFFFFF (White)
+   - Accent Color: #FFD700 (Gold)
+   - Neutral Color: #C0C0C0 (Silver)
+
+Remember, these color schemes are just suggestions, and you can adjust them according to your preferences and brand identity. Additionally, consider ensuring good contrast and readability, and use color psychology principles to align with the desired emotions and values you want to convey through your job portal website.
