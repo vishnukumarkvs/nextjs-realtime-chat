@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,9 +33,13 @@ export default function RegisterForm() {
         }
       } else {
         toast.success("Account created successfully");
-        router.push("/login");
+        signIn("credentials", {
+          email,
+          password,
+        });
       }
     } catch (error) {
+      console.lof(error);
       console.error("Failed to create account:", error);
       toast.error("Failed to create account");
     }

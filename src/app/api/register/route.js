@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import { redis } from "@/lib/redis";
 import { nanoid } from "nanoid";
-import { signIn } from "next-auth/react";
 
 export async function POST(req) {
   const { email, password } = await req.json();
@@ -26,12 +25,6 @@ export async function POST(req) {
     if (result !== "OK") {
       throw new Error("Failed to create user");
     }
-
-    signIn("credentials", {
-      email,
-      password,
-      callbackUrl: "/dashbaord",
-    });
 
     return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {
