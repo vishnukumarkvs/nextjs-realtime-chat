@@ -21,10 +21,25 @@ export async function POST(req) {
       salt,
     };
 
-    const result = await redis.set(`user:${email}`, JSON.stringify(user));
-    if (result !== "OK") {
-      throw new Error("Failed to create user");
+    try {
+      const result = await redis
+        .multi()
+        .set(`user:${id}`, JSON.stringify(user))
+        .set(`user:${email}`, JSON.stringify(user))
+        .set(`user:email:${user.email}`, id)
+        .exec();
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      return new Response("Failed to create user", { status: 500 });
     }
+
+    // // Check the result of the transaction
+    // const setResult = result[0][1]; // Result of the first SET command
+    // const emailResult = result[1][1]; // Result of the second SET command
+
+    // if (setResult !== "OK" || emailResult !== "OK") {
+    //   throw new Error("Failed to create user or set user email");
+    // }
 
     return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {

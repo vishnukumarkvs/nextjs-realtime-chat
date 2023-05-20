@@ -22,6 +22,8 @@ const sidebarOptions = [
 
 const Layout = async ({ children }) => {
   const session = await getServerSession(authOptions);
+  if (session.user.firstLogin) {
+  }
   const friends = await getFriendsByUserIds(session.user.id);
   const unseenRequestCount = (
     await fetchRedis(

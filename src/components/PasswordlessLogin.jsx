@@ -47,14 +47,14 @@ const PasswordlessLogin = ({}) => {
       <p className="font-semibold">Passwordless SignIn</p>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div class="relative flex flex-col ">
+          <div className="relative flex flex-col ">
             <div className="mb-4">
               <input
                 {...register("email")}
                 type="email"
                 name="email"
                 id="email"
-                class="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block p-2.5"
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block p-2.5"
                 placeholder="name@example.com"
                 required
               />
@@ -71,7 +71,7 @@ const PasswordlessLogin = ({}) => {
         <Button
           type="sumbit"
           onClick={() => signIn("google")}
-          class="p-2 rounded-md bg-black text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-80 cursor-pointer"
+          className="p-2 rounded-md bg-black text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-80 cursor-pointer"
         >
           SignIn with Google
         </Button>

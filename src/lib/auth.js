@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import bcrypt from "bcrypt";
 import { createTransport } from "nodemailer";
+import { fetchRedis } from "@/helpers/redis";
 
 /**
  * Email HTML body
@@ -96,30 +97,38 @@ const authorizeCredentials = async (credentials) => {
   return user;
 };
 
-const jwtCallback = async ({ token, user }) => {
-  if (!user) {
-    return token;
-  }
+const jwtCallback = async ({ token, user, session, trigger }) => {
+  console.log("jwtCallback", token, user, session, trigger);
+  const dbUserResult = await fetchRedis("get", `user:${token.id}`);
 
-  let dbUser = await redis.get(`user:${token.id}`);
-
-  if (typeof dbUser === "string") {
-    try {
-      dbUser = JSON.parse(dbUser);
-    } catch (err) {
-      console.error("Error parsing user object:", err);
+  if (!dbUserResult) {
+    if (user) {
+      token.id = user.id;
     }
+
+    return token;
+  }
+  let dbUser = JSON.parse(dbUserResult);
+  console.log("dbUser", dbUser);
+
+  if (!dbUser.name) {
+    const email = dbUser.email;
+    const atIndex = email.indexOf("@");
+    const username = email.substring(0, atIndex);
+    const name = username.replace(/\./g, " ");
+
+    dbUser.name = name;
+    await redis.set(`user:${token.id}`, dbUser);
   }
 
-  if (!dbUser) {
-    token.id = user.id;
-    return token;
+  if (trigger === "update") {
+    return { ...token, ...session.user };
   }
 
   return {
-    id: dbUser?.id,
-    name: dbUser?.name,
-    email: dbUser?.email,
+    id: dbUser.id,
+    name: dbUser.name || user.name, // Use dbUser.name if available, otherwise fallback to user.name
+    email: dbUser.email,
     image: dbUser?.image,
   };
 };

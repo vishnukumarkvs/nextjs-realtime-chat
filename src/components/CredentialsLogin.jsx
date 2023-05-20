@@ -45,11 +45,11 @@ const CredentialsLogin = ({}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <p className="font-semibold mb-4">Credentials SignIn</p>
-      <div class="relative flex flex-col">
+      <div className="relative flex flex-col">
         <div className="mb-4">
           <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="email"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Email
           </label>
@@ -58,15 +58,15 @@ const CredentialsLogin = ({}) => {
             type="email"
             name="email"
             id="email"
-            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
             placeholder="name@example.com"
             required
           />
         </div>
         <div>
           <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="password"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Password
           </label>
@@ -76,7 +76,7 @@ const CredentialsLogin = ({}) => {
             name="password"
             id="password"
             placeholder="••••••••"
-            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
             required
           />
         </div>
