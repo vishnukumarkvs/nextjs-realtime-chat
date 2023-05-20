@@ -1,5 +1,7 @@
 import FriendRequestsSidebarOption from "@/components/FriendRequestsSidebarOption";
+import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
+import { getFriendsByUserIds } from "@/helpers/get-friends-by-user-ids";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
@@ -20,6 +22,7 @@ const sidebarOptions = [
 
 const Layout = async ({ children }) => {
   const session = await getServerSession(authOptions);
+  const friends = await getFriendsByUserIds(session.user.id);
   const unseenRequestCount = (
     await fetchRedis(
       "smembers",
@@ -39,7 +42,9 @@ const Layout = async ({ children }) => {
         </div>
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gp-y-7">
-            <li>// chats that this user has</li>
+            <li>
+              <SidebarChatList sessionId={session.user.id} friends={friends} />
+            </li>
             <li>
               <div className="text-xs font-semibold leading-6 text-gray-400">
                 Overview
