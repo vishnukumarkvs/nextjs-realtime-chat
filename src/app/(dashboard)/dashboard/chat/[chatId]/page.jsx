@@ -46,9 +46,30 @@ const Page = async ({ params }) => {
   const initialMessages = await getChatMessages(params.chatId);
 
   return (
-    <main className="pt-8">
-      <p>{params.chatId}</p>
-    </main>
+    <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)]">
+      <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+        <div className="relative flex items-center space-x-4">
+          <div className="relative">
+            <div className="relative sm:w-12 w-8 h-8 sm:h-12">
+              <Image
+                fill
+                referrePolicy="no-referrer"
+                src={chatPartner?.image}
+                alt={`${chatPartner?.name} profile image`}
+                className="rounded-full"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col leading-tight">
+            <div className="text-xl flex items-center">
+              <span className="text-gray-700 mr-3 font-semibold">
+                {chatPartner.name}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
