@@ -1,6 +1,7 @@
 import FriendRequestsSidebarOption from "@/components/FriendRequestsSidebarOption";
 import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
+import UserAvatar from "@/components/userAvatar";
 import { getFriendsByUserIds } from "@/helpers/get-friends-by-user-ids";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
@@ -22,8 +23,7 @@ const sidebarOptions = [
 
 const Layout = async ({ children }) => {
   const session = await getServerSession(authOptions);
-  if (session.user.firstLogin) {
-  }
+
   const friends = await getFriendsByUserIds(session.user.id);
   const unseenRequestCount = (
     await fetchRedis(
@@ -77,14 +77,15 @@ const Layout = async ({ children }) => {
             </li>
             <li className="-mx-6 mt-auto flex items-center">
               <div className="flex flex-1 items-center gap-x-y px-6 py-3 text-sm font-semi-bold leading-6 text-gray-900">
-                <div className="relative h-8 w-8 bg-gray-50">
-                  <Image
+                <div className="relative h-8 w-8  m-2">
+                  {/* <Image
                     fill
                     referrerPolicy="no-referrer"
                     className="rounded-full"
                     src={session.user.image || ""}
                     alt="your profile picture"
-                  />
+                  /> */}
+                  <UserAvatar name={session.user.name} />
                 </div>
                 <span className="sr-only">Your profile</span>
                 <div className="flex flex-col">
