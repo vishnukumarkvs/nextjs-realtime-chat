@@ -1,5 +1,7 @@
 // dynamic route
 
+import ChatInput from "@/components/ChatInput";
+import Messages from "@/components/Messages";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { redis } from "@/lib/redis";
@@ -51,13 +53,13 @@ const Page = async ({ params }) => {
         <div className="relative flex items-center space-x-4">
           <div className="relative">
             <div className="relative sm:w-12 w-8 h-8 sm:h-12">
-              <Image
+              {/* <Image
                 fill
                 referrePolicy="no-referrer"
                 src={chatPartner?.image}
                 alt={`${chatPartner?.name} profile image`}
                 className="rounded-full"
-              />
+              /> */}
             </div>
           </div>
           <div className="flex flex-col leading-tight">
@@ -66,9 +68,12 @@ const Page = async ({ params }) => {
                 {chatPartner.name}
               </span>
             </div>
+            <span className="text-sm text-gray-600">{chatPartner.email}</span>
           </div>
         </div>
       </div>
+      <Messages initialMessages={initialMessages} sessionId={session.user.id} />
+      <ChatInput chatId={params.chatId} chatPartner={chatPartner} />
     </div>
   );
 };

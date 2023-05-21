@@ -34,7 +34,7 @@ const SidebarChatList = ({ friends, sessionId }) => {
               )}`}
               className="text-gray-700 hover:text-indigo-600 hover-bg-gray-50 group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
             >
-              {friend.email}
+              {friend.name}
               {unseenMessageCount > 0 ? (
                 <div className="bg-indigo-600 font-medium text-xs text-white w-4 h-4 rounded-full flex justify-center items-center">
                   {unseenMessageCount}
