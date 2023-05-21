@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import TextAreaAutosize from "react-textarea-autosize";
 import Button from "./ui/Button";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 // npm react textarea autosize
 // button inside text-area
@@ -16,8 +18,13 @@ const ChatInput = ({ chatPartner, chatId }) => {
     setIsLoading(true);
     try {
       await axios.post("/api/message/send", { text: input, chatId });
+      setInput("");
+      textareaRef.current?.focus();
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 

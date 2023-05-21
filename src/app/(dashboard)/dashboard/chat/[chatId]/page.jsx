@@ -13,13 +13,7 @@ async function getChatMessages(chatId) {
   try {
     // zrange = sorted set
     // 0 tyo -1 = first to last element
-    const result = await fetchRedis(
-      "zrange",
-      `chat:${chatId}`,
-      0,
-      -1,
-      "WITHSCORES"
-    );
+    const result = await fetchRedis("zrange", `chat:${chatId}:messages`, 0, -1);
     const dbMessages = result.map((message) => JSON.parse(message));
 
     const reversedDbMessages = dbMessages.reverse();
@@ -46,6 +40,8 @@ const Page = async ({ params }) => {
   const chatPartnerId = userId1 === user.id ? userId2 : userId1;
   const chatPartner = await redis.get(`user:${chatPartnerId}`);
   const initialMessages = await getChatMessages(params.chatId);
+  console.log(initialMessages);
+  console.log(params.chatId);
 
   return (
     <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)]">

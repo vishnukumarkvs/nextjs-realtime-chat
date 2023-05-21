@@ -98,7 +98,7 @@ const authorizeCredentials = async (credentials) => {
 };
 
 const jwtCallback = async ({ token, user, session, trigger }) => {
-  console.log("jwtCallback", token, user, session, trigger);
+  // console.log("jwtCallback", token, user, session, trigger);
   const dbUserResult = await fetchRedis("get", `user:${token.id}`);
 
   if (!dbUserResult) {
@@ -109,7 +109,7 @@ const jwtCallback = async ({ token, user, session, trigger }) => {
     return token;
   }
   let dbUser = JSON.parse(dbUserResult);
-  console.log("dbUser", dbUser);
+  // console.log("dbUser", dbUser);
 
   if (!dbUser.name) {
     const email = dbUser.email;

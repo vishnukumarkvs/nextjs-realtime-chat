@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { useRef, useState } from "react";
 
 // Ref for scrolldown to latest message
@@ -8,6 +10,10 @@ const Messages = ({ initialMessages, sessionId }) => {
   // direct show to users rather than refresh
   const [messages, setMessages] = useState(initialMessages);
   const scrollDownRef = useRef(null);
+
+  const formatTimestamp = (timestamp) => {
+    return format(timestamp, "HH:mm");
+  };
   return (
     <div
       id="messages"
@@ -15,7 +21,7 @@ const Messages = ({ initialMessages, sessionId }) => {
     >
       <div ref={scrollDownRef} />
       {messages.map((message, index) => {
-        const isCurrentUser = message.senederId === sessionId;
+        const isCurrentUser = message.senderId === sessionId;
 
         return (
           <div
@@ -43,8 +49,8 @@ const Messages = ({ initialMessages, sessionId }) => {
                   })}
                 >
                   {message.text}{" "}
-                  <span classNasme="ml-2 text-xs text-gray-400">
-                    {message.timestamp}
+                  <span className="ml-2 text-xs text-gray-400">
+                    {formatTimestamp(message.timestamp)}
                   </span>
                 </span>
               </div>
