@@ -27,7 +27,7 @@ const Messages = ({ initialMessages, sessionId, chatId }) => {
       pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
       pusherClient.unbind("incoming_messages", messageHandler);
     };
-  }, []);
+  }, [chatId]);
   return (
     <div
       id="messages"
