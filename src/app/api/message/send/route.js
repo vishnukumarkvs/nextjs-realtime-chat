@@ -46,6 +46,11 @@ export async function POST(req) {
       message
     );
 
+    pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), "new_message", {
+      ...message,
+      senderName: sender.name,
+    });
+
     // all valid, send message
     // z - sorted set, sorts by score which is timestamp
     await redis.zadd(`chat:${chatId}:messages`, {
