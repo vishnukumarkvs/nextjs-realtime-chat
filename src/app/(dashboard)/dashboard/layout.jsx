@@ -72,6 +72,7 @@ const Layout = async ({ children }) => {
             </li>
             <li>
               <FriendRequestsSidebarOption
+                sessionId={session.user.id}
                 initialUnseenRequestCount={unseenRequestCount}
               />
             </li>

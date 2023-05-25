@@ -1,12 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { pusherClient } from "@/lib/pusher";
+import { cn, toPusherKey } from "@/lib/utils";
 import { format } from "date-fns";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Ref for scrolldown to latest message
 
-const Messages = ({ initialMessages, sessionId }) => {
+const Messages = ({ initialMessages, sessionId, chatId }) => {
   // direct show to users rather than refresh
   const [messages, setMessages] = useState(initialMessages);
   const scrollDownRef = useRef(null);
@@ -14,6 +15,19 @@ const Messages = ({ initialMessages, sessionId }) => {
   const formatTimestamp = (timestamp) => {
     return format(timestamp, "HH:mm");
   };
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
+    const messageHandler = (message) => {
+      setMessages((prev) => [message, ...prev]);
+    };
+    pusherClient.bind("incoming-message", messageHandler); // function name, handler
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
+      pusherClient.unbind("incoming_messages", messageHandler);
+    };
+  }, []);
   return (
     <div
       id="messages"

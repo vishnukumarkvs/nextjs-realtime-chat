@@ -15,6 +15,7 @@ const ChatInput = ({ chatPartner, chatId }) => {
   const textareaRef = useRef(null);
 
   const sendMessage = async () => {
+    if (!input.trim()) return;
     setIsLoading(true);
     try {
       await axios.post("/api/message/send", { text: input, chatId });

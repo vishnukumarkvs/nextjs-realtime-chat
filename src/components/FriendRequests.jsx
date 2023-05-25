@@ -14,8 +14,8 @@ const FriendRequests = ({ incomingFriendRequests, sessionId }) => {
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
-    const friendRequestHandler = () => {
-      console.log("new friend request");
+    const friendRequestHandler = ({ senderId, senderEmail }) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
     };
     pusherClient.bind("incoming_friend_requests", friendRequestHandler); // function name, handler
 
