@@ -1,4 +1,5 @@
 import { authOptions } from "@/lib/auth";
+import { redis } from "@/lib/redis";
 import { getServerSession } from "next-auth";
 
 export async function POST(req) {
