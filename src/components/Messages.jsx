@@ -1,8 +1,10 @@
 "use client";
 
+import { db } from "@/lib/firebase";
 import { pusherClient } from "@/lib/pusher";
 import { cn, toPusherKey } from "@/lib/utils";
 import { format } from "date-fns";
+import { onValue, ref } from "firebase/database";
 import { useEffect, useRef, useState } from "react";
 
 // Ref for scrolldown to latest message
@@ -16,18 +18,28 @@ const Messages = ({ initialMessages, sessionId, chatId }) => {
     return format(timestamp, "HH:mm");
   };
 
-  useEffect(() => {
-    pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
-    const messageHandler = (message) => {
-      setMessages((prev) => [message, ...prev]);
-    };
-    pusherClient.bind("incoming-message", messageHandler); // function name, handler
+  // useEffect(() => {
+  //   pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
+  //   const messageHandler = (message) => {
+  //     setMessages((prev) => [message, ...prev]);
+  //   };
+  //   pusherClient.bind("incoming-message", messageHandler); // function name, handler
 
-    return () => {
-      pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
-      pusherClient.unbind("incoming_messages", messageHandler);
-    };
+  //   return () => {
+  //     pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
+  //     pusherClient.unbind("incoming_messages", messageHandler);
+  //   };
+  // }, [chatId]);
+  useEffect(() => {
+    const chatRef = ref(db, `chat/${chatId}/messages`);
+    onValue(chatRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const message = childSnapshot.val();
+        setMessages((prev) => [message, ...prev]);
+      });
+    });
   }, [chatId]);
+
   return (
     <div
       id="messages"
@@ -63,9 +75,9 @@ const Messages = ({ initialMessages, sessionId, chatId }) => {
                   })}
                 >
                   {message.text}{" "}
-                  <span className="ml-2 text-xs text-gray-400">
+                  {/* <span className="ml-2 text-xs text-gray-400">
                     {formatTimestamp(message.timestamp)}
-                  </span>
+                  </span> */}
                 </span>
               </div>
             </div>

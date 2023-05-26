@@ -1,9 +1,11 @@
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/firebase";
 import { pusherServer } from "@/lib/pusher";
 import { redis } from "@/lib/redis";
 import { toPusherKey } from "@/lib/utils";
 import { messageValidator } from "@/lib/validations/message";
+import { ref, set } from "firebase/database";
 import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 
@@ -39,24 +41,36 @@ export async function POST(req) {
     };
     const message = messageValidator.parse(messageData);
 
-    // notify all connected room clients
-    pusherServer.trigger(
-      toPusherKey(`chat:${chatId}`),
-      "incoming-message",
-      message
-    );
+    // // notify all connected room clients
+    // pusherServer.trigger(
+    //   toPusherKey(`chat:${chatId}`),
+    //   "incoming-message",
+    //   message
+    // );
 
-    pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), "new_message", {
-      ...message,
-      senderName: sender.name,
-    });
+    // pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), "new_message", {
+    //   ...message,
+    //   senderName: sender.name,
+    // });
 
     // all valid, send message
     // z - sorted set, sorts by score which is timestamp
-    await redis.zadd(`chat:${chatId}:messages`, {
-      score: timestamp,
-      member: JSON.stringify(message),
-    });
+    // await redis.zadd(`chat:${chatId}:messages`, {
+    //   score: timestamp,
+    //   member: JSON.stringify(message),
+    // });
+
+    await set(ref(db, `chat/${chatId}/messages`), {
+      senderId: sender.id,
+      message: message,
+      timestamp: timestamp,
+    })
+      .then(() => {
+        console.log("Message sent successfully");
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
     return new Response("OK");
   } catch (error) {
     console.error(error);
