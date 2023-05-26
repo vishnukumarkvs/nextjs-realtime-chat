@@ -60,10 +60,8 @@ export async function POST(req) {
     //   member: JSON.stringify(message),
     // });
 
-    await set(ref(db, `chat/${chatId}/messages`), {
-      senderId: sender.id,
+    await set(ref(db, `chat/${chatId}/messages/${timestamp}`), {
       message: message,
-      timestamp: timestamp,
     })
       .then(() => {
         console.log("Message sent successfully");

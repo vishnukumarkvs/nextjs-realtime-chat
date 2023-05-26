@@ -4,14 +4,14 @@ import { db } from "@/lib/firebase";
 import { pusherClient } from "@/lib/pusher";
 import { cn, toPusherKey } from "@/lib/utils";
 import { format } from "date-fns";
-import { onValue, ref } from "firebase/database";
+import { off, onChildAdded, onValue, ref } from "firebase/database";
 import { useEffect, useRef, useState } from "react";
 
 // Ref for scrolldown to latest message
 
 const Messages = ({ initialMessages, sessionId, chatId }) => {
   // direct show to users rather than refresh
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
   const scrollDownRef = useRef(null);
 
   const formatTimestamp = (timestamp) => {
@@ -32,12 +32,23 @@ const Messages = ({ initialMessages, sessionId, chatId }) => {
   // }, [chatId]);
   useEffect(() => {
     const chatRef = ref(db, `chat/${chatId}/messages`);
-    onValue(chatRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const message = childSnapshot.val();
-        setMessages((prev) => [message, ...prev]);
-      });
-    });
+    // onValue(chatRef, (snapshot) => {
+    //   snapshot.forEach((childSnapshot) => {
+    //     const message = childSnapshot.val();
+    //     setMessages((prev) => [message, ...prev]);
+    //   });
+    // });
+    const messageHandler = (snapshot) => {
+      const message = snapshot.val();
+      console.log("message received from server", message.message);
+      setMessages((prevMessages) => [message.message, ...prevMessages]);
+    };
+
+    onChildAdded(chatRef, messageHandler);
+
+    return () => {
+      off(chatRef, "child_added", messageHandler);
+    };
   }, [chatId]);
 
   return (
@@ -46,14 +57,12 @@ const Messages = ({ initialMessages, sessionId, chatId }) => {
       className="flex h-full flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
     >
       <div ref={scrollDownRef} />
-      {messages.map((message, index) => {
+      {messages.map((message) => {
         const isCurrentUser = message.senderId === sessionId;
+        const messageKey = `${message.id}-${message.timestamp}`; // Generate a unique key
 
         return (
-          <div
-            className="chat-message"
-            key={`${message.id}-${message.timestamp}`}
-          >
+          <div className="chat-message" key={messageKey}>
             <div
               className={cn("flex items-end", {
                 "justify-end": isCurrentUser,
