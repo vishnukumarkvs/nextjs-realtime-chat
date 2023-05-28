@@ -10,6 +10,8 @@
 - This has 3 login variations: GoogleProvider, EmailProvider, CredentialsProvider
 - (Note) ForgotPassword for CredentialsProvider not yet implemented
 
+### Chat
+
 - Two variations for chat storage and realtime
 - Redis + Pusher (main branch)
 - Fireabase Realtime (firebase branch)
