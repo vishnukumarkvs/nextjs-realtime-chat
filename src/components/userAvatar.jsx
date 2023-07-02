@@ -3,16 +3,28 @@
 import { AvatarComponent } from "avatar-initials";
 
 function getInitials(name) {
-  const words = name.split(" ");
-  let initials = "";
+  try {
+    if (typeof name !== "string") {
+      throw new Error("Invalid input. Please provide a string.");
+    }
 
-  if (words.length > 1) {
-    initials = words[0][0] + words[1][0];
-  } else {
-    initials = name.slice(0, 2);
+    console.log(name);
+    const words = name.split(" ");
+    let initials = "";
+
+    if (words.length > 1) {
+      initials = words[0][0] + words[1][0];
+    } else {
+      initials = name.slice(0, 2);
+    }
+
+    return initials.toUpperCase();
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+    // You can choose to return a default value or re-throw the error
+    // throw error; // Uncomment this line to re-throw the error
+    return "AA"; // Returning an empty string as a default value
   }
-
-  return initials.toUpperCase();
 }
 
 const UserAvatar = ({ name }) => {

@@ -8,7 +8,7 @@ const Dashboard = async () => {
   return (
     <div>
       <p>Hi Dashboard</p>
-      <pre>{JSON.stringify(session)}</pre>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
       {/* interactivity like this shou;d be in client component */}
       {/* <Button onClick={() => signOut()}>Sign Out</Button> */}
     </div>
